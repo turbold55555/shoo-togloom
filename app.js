@@ -90,7 +90,7 @@ document.querySelector(".btn-roll").addEventListener("click", function (){
 
     }
     else{
-        alert("Тоглоом дууссан байна йыбө");
+        alert("Тоглоом дууссан байна да");
     }
 
 });
@@ -119,7 +119,7 @@ document.querySelector(".btn-roll").addEventListener("click", function (){
 
             //  Уг тоглогч хожсон эсэхийг шалгах 
     
-            if( scores[activePlayer] >= 10) {
+            if( scores[activePlayer] >= 100) {
                 // Тоглоомыг дууссан төлөвт оруулна 
                 isNewGame =false;
                 // if(isGameOver )
@@ -173,4 +173,9 @@ document.querySelector(".btn-roll").addEventListener("click", function (){
 
     // Шинэ тоглоом эхлүүлэх  товчны  эвент листенер\
     document.querySelector('.btn-new').addEventListener("click" ,  initGame);
+
+
+    $(document).ready(function(){
+         
+    })
 
