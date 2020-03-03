@@ -1,11 +1,35 @@
-// Тоглогчийн ээлжийг хадгалах хувьсагч, нэгдүгээр тоглогч 0, хоёрдугаар тоглогч 1 гэж тэмдэглэе.
-var activePlayer = 0;
+
+
+// Тоглоом дууссан эхэсийг хадгалах төлөвийн хувьсагч:
+var isNewGame;
+
+// Тоглоомын бүх газар ашиглагдах глобаль хувьсагчдыг энд зарлая
+
+//  аль тоглоч шоо шидэх вэ гэдгийг энд хадгална аа
+var activePlayer;
+// 2 тоглочийн цуглуулсан оноонууд
+var scores;
+//  идэвхитэй тоглогчийн цуглуулж байгаа ээлжийн оноо
+var roundScore;
+
+//  Шооны зурагыг үзүүлэх элементыг энд хадгалья
+var diceDom =  document.querySelector(".dice") ;
+
+    // Togloom ehleh
+    initGame();
+//  Тоглоом шинээр эхлэх функц
+function initGame() {
+
+    // Тоглоом эхэллээ
+    isNewGame =true;
+
+    activePlayer = 0;
 
 // Тоглогчдын цуглуулсан оноог хадгалах хувьсагч.
-var scores = [0, 0];
+scores = [0, 0];
 
 //  Тоглогчийн ээлжиндээ цуглуулж байгаа оноог хадгалах хувьсагч.
-var roundScore = 0;
+roundScore = 0;
 
 
 //  Шооны аль талаараа буусныг хадгалах хувьсагч хэрэгтэй, 1-6 гэсэн утгыг энэ хувьсагчид санамсаргүйгээр үүсгэж өгнө.
@@ -16,12 +40,26 @@ document.getElementById("score-1").textContent = "0";
 document.getElementById("current-0").textContent = "0";
 document.getElementById("current-1").textContent = "0";
 
-var diceDom =  document.querySelector(".dice") ;
-// diceDom.style.display = "none";
+// Тоглочдын нэрийг буцааж гаргах
+document.getElementById('name-0').textContent= 'Player 1';
+document.getElementById('name-1').textContent= 'Player 2';
+
+document.querySelector('.player-0-panel').classList.remove('winner');
+document.querySelector('.player-1-panel').classList.remove('winner');
+
+document.querySelector('.player-0-panel').classList.remove('active');
+document.querySelector('.player-1-panel').classList.remove('active');
+
+document.querySelector('.player-1-panel').classList.add('active');
+
+
+diceDom.style.display = "none";
+}
 
 //  Шоог шидэх эвент листенер 
 document.querySelector(".btn-roll").addEventListener("click", function (){
-    // нэгээс  6 дотрхи санамсаргүй нэг тоо гаргаж авна
+    if(isNewGame === true){
+          // нэгээс  6 дотрхи санамсаргүй нэг тоо гаргаж авна
     var diceNumber = Math.floor(Math.random()*6) + 1;
 
     // Шооны зурагыг вэб дээр гаргаж ирнэ 
@@ -50,6 +88,11 @@ document.querySelector(".btn-roll").addEventListener("click", function (){
         // }
     }
 
+    }
+    else{
+        alert("Тоглоом дууссан байна йыбө");
+    }
+
 });
 
 //   Hold Товчны эвент листенер
@@ -71,22 +114,32 @@ document.querySelector(".btn-roll").addEventListener("click", function (){
 
         // дэлгэц дээр оноог нь өөрчилнө.
 
-        document.getElementById('score-' + activePlayer).textContent=scores[activePlayer];
+        if(isNewGame){
+            document.getElementById('score-' + activePlayer).textContent=scores[activePlayer];
 
-        //  Уг тоглогч хожсон эсэхийг шалгах 
-
-        if( scores[activePlayer] >= 10) {
-            document.getElementById("name-" + activePlayer).textContent = 'Wiiner !!!';
-            document.querySelector('.player-'+ activePlayer +'-panel').classList.add('winner');
-            document.querySelector('.player-'+ activePlayer +'-panel').classList.remove('active');
-        } else {
-                switchToNextPlayer();
+            //  Уг тоглогч хожсон эсэхийг шалгах 
+    
+            if( scores[activePlayer] >= 10) {
+                // Тоглоомыг дууссан төлөвт оруулна 
+                isNewGame =false;
+                // if(isGameOver )
+    
+                document.getElementById("name-" + activePlayer).textContent = 'Wiiner !!!';
+                document.querySelector('.player-'+ activePlayer +'-panel').classList.add('winner');
+                document.querySelector('.player-'+ activePlayer +'-panel').classList.remove('active');
+            } else {
+                  //  Тоглогчийн ээлжийг солих:
+                    switchToNextPlayer();
+            }
+        }
+        else{
+            alert("Тоглоом дууссан байна");
         }
 
         
 
-        //  Тоглогчийн ээлжийг солих:
-        switchToNextPlayer();
+      
+      
 
             
     });
@@ -119,7 +172,5 @@ document.querySelector(".btn-roll").addEventListener("click", function (){
     }
 
     // Шинэ тоглоом эхлүүлэх  товчны  эвент листенер\
-    document.querySelector('.btn-new').addEventListener("click" , function(){
+    document.querySelector('.btn-new').addEventListener("click" ,  initGame);
 
-            alert("Шинэ тоглоом");
-    });
